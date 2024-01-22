@@ -15,6 +15,7 @@ model List {
   title String
   items Item[]
   userId String
+  likes String[]
 }
 
 model Item {
