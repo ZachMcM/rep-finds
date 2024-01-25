@@ -17,7 +17,8 @@ export async function GET(request: Request) {
   for (const result of data.sections.Products) {
     results.push({
       name: result.value,
-      imageUrl: result.data.image_url
+      imageUrl: result.data.image_url,
+      id: result.data.id
     })
   }
 

@@ -13,6 +13,7 @@ datasource db {
 model List {
   id String @id @default(cuid())
   title String
+  description String
   items Item[]
   userId String
   likes String[]
@@ -21,9 +22,7 @@ model List {
 model Item {
   id  String @id @default(cuid())
   userId String 
-  type String
-  brand String
-  colorway String
+  name String
   imageUrl String
   price String
   pandabuyUrl String

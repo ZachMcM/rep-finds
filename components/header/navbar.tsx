@@ -1,7 +1,7 @@
 import { UserButton } from "@clerk/nextjs";
 import { ThemeButton } from "./theme-button";
 import Link from "next/link";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { ArrowRight } from "lucide-react";
 
 export function Navbar() {
