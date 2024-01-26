@@ -40,7 +40,7 @@ export function NewListForm() {
                 <FormLabel>Title</FormLabel>
                 <FormControl>
                   <Input
-                    className="max-w-xl"
+                    className="max-w-2xl"
                     {...field}
                     placeholder="Enter a title"
                   />
@@ -56,7 +56,7 @@ export function NewListForm() {
                 <FormLabel>Description</FormLabel>
                 <FormControl>
                   <Textarea
-                    className="max-w-xl"
+                    className="max-w-2xl"
                     {...field}
                     placeholder="Enter a description"
                   />
