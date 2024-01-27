@@ -16,7 +16,7 @@ model List {
   description String
   items Item[]
   userId String
-  type String
+  category String
   likes String[]
 }
 
@@ -25,7 +25,7 @@ model Item {
   userId String 
   name String
   imageUrl String
-  price String
+  price Decimal
   pandabuyUrl String
   list List @relation(fields: [listId], references: [id])
   listId String

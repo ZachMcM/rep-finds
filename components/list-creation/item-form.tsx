@@ -1,6 +1,6 @@
 "use client";
 
-import { DollarSign, Plus, PlusCircle } from "lucide-react";
+import { Plus, PlusCircle } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -45,12 +45,12 @@ export const itemFormSchema = z.object({
   product: z.object({
     name: z.string(),
     imageUrl: z.string().url(),
-    id: z.string()
+    id: z.string(),
   }),
   price: z.coerce
     .number({ required_error: "Must be a valid price" })
     .nonnegative()
-    .min(0.5, { message: "Price must be at least $0.50"})
+    .min(0.5, { message: "Price must be at least $0.50" })
     .nullish()
     .transform((x) => (x ? x : undefined)),
   pandabuyLink: z
@@ -69,7 +69,7 @@ export function ItemForm() {
 
   const [popoverOpen, setPopoverOpen] = useState(false);
 
-  const [dialogOpen, setDialogOpen] = useState(false)
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const primaryListForm = useNewListForm();
 
@@ -81,11 +81,11 @@ export function ItemForm() {
       product: {
         name: "",
         imageUrl: "",
-        id: ""
+        id: "",
       },
-      price: 0.50,
-      pandabuyLink: ""
-    }
+      price: 0.5,
+      pandabuyLink: "",
+    },
   });
 
   // searching the api for the item
@@ -132,8 +132,8 @@ export function ItemForm() {
       primaryListForm.setValue("items", currItems);
     }
 
-    form.reset()
-    setDialogOpen(false)
+    form.reset();
+    setDialogOpen(false);
   }
 
   return (
@@ -151,7 +151,11 @@ export function ItemForm() {
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-8"
+            id="item-form"
+          >
             <FormField
               control={form.control}
               name="product"
@@ -159,10 +163,15 @@ export function ItemForm() {
                 <FormItem>
                   <FormLabel>Item</FormLabel>
                   <FormControl>
-                    <Popover open={popoverOpen} onOpenChange={setPopoverOpen} modal={true}>
+                    <Popover
+                      open={popoverOpen}
+                      onOpenChange={setPopoverOpen}
+                      modal={true}
+                    >
                       <PopoverTrigger asChild>
                         <div className="w-full flex justify-center text-sm font-medium p-2 border rounded-md hover:bg-accent cursor-pointer">
-                          {field.value.name != "" && field.value.imageUrl != "" ? (
+                          {field.value.name != "" &&
+                          field.value.imageUrl != "" ? (
                             <div className="flex justify-center items-center gap-4">
                               <Image
                                 src={field.value.imageUrl}
@@ -201,11 +210,11 @@ export function ItemForm() {
                                       form.setValue("product", {
                                         name: item.name,
                                         imageUrl: item.imageUrl,
-                                        id: item.id
+                                        id: item.id,
                                       });
                                       setPopoverOpen(false);
-                                      setItemQuery("")
-                                      debounceRequest()
+                                      setItemQuery("");
+                                      debounceRequest();
                                     }}
                                     className="cursor-pointer"
                                   >
@@ -258,7 +267,7 @@ export function ItemForm() {
                 </FormItem>
               )}
             />
-            <Button type="submit">
+            <Button type="submit" form="item-form">
               Add <PlusCircle className="ml-2 h-4 w-4" />
             </Button>
           </form>

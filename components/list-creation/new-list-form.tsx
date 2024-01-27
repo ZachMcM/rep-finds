@@ -22,23 +22,71 @@ import { ItemsList } from "./items-list";
 import { NewListFormValues, useNewListForm } from "./new-list-form-provider";
 import { useId } from "react";
 import { Button } from "../ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Loader2 } from "lucide-react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useAuth } from "@clerk/nextjs";
+import { useToast } from "../ui/use-toast";
+import { useWatch } from "react-hook-form";
+import { ItemForm } from "./item-form";
 
 export function NewListForm() {
   const form = useNewListForm();
 
+  const { userId } = useAuth();
+
+  const { toast } = useToast();
+
+  const queryClient = useQueryClient();
+
+  const { mutate: submitList, isPending: submissionPending } = useMutation({
+    mutationFn: async (values: NewListFormValues) => {
+      const req = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/lists`, {
+        method: "POST",
+        body: JSON.stringify({
+          list: values,
+        }),
+      });
+
+      const res = await req.json();
+      console.log(res);
+      return res;
+    },
+    onSuccess: (data) => {
+      console.log(data);
+
+      queryClient.invalidateQueries({
+        queryKey: ["users", { userId: userId }],
+      });
+
+      toast({
+        description: "Successfully created the list!",
+      });
+    },
+    onError: (err) => {
+      console.log(err);
+      toast({
+        description: "There was an error creating the list. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
   function onSubmit(values: NewListFormValues) {
     console.log(values);
+    console.log("Wrong on submit");
+    submitList(values);
   }
 
   return (
-    <div className="flex flex-col space-y-8">
+    <div className="flex flex-col space-y-6">
+      <ItemForm />
       <Form {...form}>
         <form
+          id="list-form"
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col md:flex-row justify-between gap-6"
+          className="flex flex-col gap-10"
         >
-          <div className="flex flex-col space-y-4 w-full">
+          <div className="space-y-6">
             <FormField
               control={form.control}
               name="title"
@@ -98,24 +146,30 @@ export function NewListForm() {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="items"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <ItemsList items={field.value} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
           </div>
+          <FormField
+            control={form.control}
+            name="items"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <ItemsList items={field.value} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <Button
             type="submit"
-            className=" place-self-end md:place-self-auto w-fit"
+            form="list-form"
+            className="place-self-end w-fit"
           >
-            Submit <ArrowRight className="h-4 w-4 ml-2" />
+            Submit{" "}
+            {submissionPending ? (
+              <Loader2 className="h-4 w-4 ml-2 animate-spin" />
+            ) : (
+              <ArrowRight className="h-4 w-4 ml-2" />
+            )}
           </Button>
         </form>
       </Form>

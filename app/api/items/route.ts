@@ -3,7 +3,7 @@ export async function GET(request: Request) {
   const query = searchParams.get("query") as null | string
 
   if (query == null) {
-    return Response.json({ status: 401, error: "Invalid query"})
+    return Response.json({ status: 400, error: "Invalid query"})
   }
 
   console.log("Query: %s", query)
@@ -21,8 +21,6 @@ export async function GET(request: Request) {
       id: result.data.id
     })
   }
-
-  console.log(results)
 
   return Response.json(results)
 }
