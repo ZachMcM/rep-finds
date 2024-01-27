@@ -16,6 +16,7 @@ model List {
   description String
   items Item[]
   userId String
+  type String
   likes String[]
 }
 
