@@ -103,7 +103,7 @@ export function ItemForm() {
       }
 
       const query = await fetch(
-        `${process.env.NEXT_PUBLIC_URL}/api/items?query=${itemQuery}`
+        `/api/items?query=${itemQuery}`
       );
       const data = await query.json();
       return data;

@@ -40,7 +40,7 @@ export function NewListForm() {
 
   const { mutate: submitList, isPending: submissionPending } = useMutation({
     mutationFn: async (values: NewListFormValues) => {
-      const req = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/lists`, {
+      const req = await fetch(`/api/lists`, {
         method: "POST",
         body: JSON.stringify({
           list: values,
@@ -48,6 +48,9 @@ export function NewListForm() {
       });
 
       const res = await req.json();
+      if (!req.ok) {
+        throw new Error("There was an error creating the list")
+      }
       console.log(res);
       return res;
     },
