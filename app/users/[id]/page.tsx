@@ -1,5 +1,6 @@
 "use client";
 
+import { ListCard } from "@/components/lists/list-card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { UserExtended } from "@/utlis/types";
@@ -14,6 +15,7 @@ export default function User({ params }: { params: { id: string } }) {
         throw new Error("There was an error loading the data");
       }
       const data = await res.json();
+      console.log(data);
       return data;
     },
   });
@@ -34,6 +36,18 @@ export default function User({ params }: { params: { id: string } }) {
         ) : (
           <h3 className="font-bold text-xl">{user?.username}</h3>
         )}
+      </div>
+      <div className="grid gap-6 grid-cols-1 md:grid-cols-3">
+        {isLoading
+          ? Array(3)
+              .fill("")
+              .map((s) => (
+                <Skeleton
+                  key={crypto.randomUUID()}
+                  className="h-[300px] w-full"
+                />
+              ))
+          : user?.lists.map((list) => <ListCard key={list.id} list={list} />)}
       </div>
     </div>
   );

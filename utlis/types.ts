@@ -1,4 +1,4 @@
-import { List } from "@prisma/client"
+import { List, Prisma } from "@prisma/client"
 
 export type UserExtended = {
   id: string,
@@ -6,3 +6,9 @@ export type UserExtended = {
   imageUrl: string,
   lists: List[]
 }
+
+export type ListExtended = Prisma.ListGetPayload<{
+  include: {
+    items: true
+  }
+}>

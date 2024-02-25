@@ -29,7 +29,7 @@ export default function RootLayout({
           >
             <ReactQueryProvider>
               <Navbar />
-              <div className="py-16 px-4 md:px-16">{children}</div>
+              <div className="py-10 md:px-16">{children}</div>
               <Toaster/>
             </ReactQueryProvider>
           </ThemeProvider>

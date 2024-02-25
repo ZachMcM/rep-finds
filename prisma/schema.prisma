@@ -14,6 +14,7 @@ model List {
   id String @id @default(cuid())
   title String
   description String
+  coverImages String[]
   items Item[]
   userId String
   category String
@@ -26,7 +27,7 @@ model Item {
   name String
   imageUrl String
   price Decimal
-  pandabuyUrl String
+  link String
   list List @relation(fields: [listId], references: [id])
   listId String
 }

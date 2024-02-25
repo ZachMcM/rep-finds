@@ -3,7 +3,7 @@ import { Card, CardContent } from "../ui/card";
 import { ListFormItem } from "./item-form";
 import Link from "next/link";
 import { linkShortener } from "@/utlis/link-shortener";
-import { Cross, X } from "lucide-react";
+import { X } from "lucide-react";
 import { useNewListForm } from "./new-list-form-provider";
 
 export function ItemCard({ item }: { item: ListFormItem }) {
@@ -27,9 +27,9 @@ export function ItemCard({ item }: { item: ListFormItem }) {
           </p>
           <Link
             className="text-muted-foreground text-xs text-center hover:opacity-70 duration-300"
-            href={item.pandabuyLink}
+            href={item.link}
           >
-            <p>{linkShortener(item.pandabuyLink)}</p>
+            <p>{linkShortener(item.link)}</p>
           </Link>
         </div>
       </CardContent>

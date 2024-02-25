@@ -30,9 +30,15 @@ export const newListFormSchema = z.object({
         .min(0.5, { message: "Price must be at least $0.50"})
         .nullish()
         .transform((x) => (x ? x : undefined)),
-      pandabuyLink: z.string().startsWith("https://www.pandabuy.com/", {
-        message: "Must be a valid Pandabuy link",
-      }),
+        link: z
+        .string({
+          required_error: "Must be a valid Pandabuy or Sugargoo link",
+        })
+        .startsWith("https://www.pandabuy.com/", {
+          message: "Must be a valid Pandabuy or Sugargoo link",
+        }).or(z.string({
+          required_error: "Must be a valid Pandabuy or Sugargoo link"
+        }).startsWith("https://www.sugargoo.com/")),
     })
     .array()
     .min(1, { message: "You must have at least 1 item in the list" }),

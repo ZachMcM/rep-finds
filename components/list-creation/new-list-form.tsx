@@ -28,6 +28,7 @@ import { useAuth } from "@clerk/nextjs";
 import { useToast } from "../ui/use-toast";
 import { useWatch } from "react-hook-form";
 import { ItemForm } from "./item-form";
+import { redirect } from "next/navigation";
 
 export function NewListForm() {
   const form = useNewListForm();
@@ -64,6 +65,8 @@ export function NewListForm() {
       toast({
         description: "Successfully created the list!",
       });
+
+      redirect(`/users/${userId}`)
     },
     onError: (err) => {
       console.log(err);

@@ -21,6 +21,13 @@ export function Sidebar() {
             {" "}
             <p className="font-bold">Rep Finds</p>
           </Link>
+          <Link href="/new-find-list" 
+            onClick={() => setOpen(false)}
+            className="text-muted-foreground hover:opacity-70 text-sm duration-300"
+          >
+            {" "}
+              Post a Find List
+          </Link>
           {userId && sessionId && (
             <Link
               href={`/users/${userId}`}
