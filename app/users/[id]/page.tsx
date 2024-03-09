@@ -2,9 +2,20 @@
 
 import { ListCard } from "@/components/lists/list-card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
-import { UserExtended } from "@/utlis/types";
+import { Category, UserExtended, categoryArray } from "@/utlis/types";
 import { useQuery } from "@tanstack/react-query";
+import { useId, useState } from "react";
 
 export default function User({ params }: { params: { id: string } }) {
   const { data: user, isLoading } = useQuery({
@@ -20,6 +31,9 @@ export default function User({ params }: { params: { id: string } }) {
     },
   });
 
+  const [query, setQuery] = useState("");
+  const [category, setCategory] = useState<Category>("Mixed");
+
   return (
     <div className="container md:mx-8 grid grid-cols-1 gap-8">
       <div className="flex items-center space-x-4">
@@ -34,10 +48,38 @@ export default function User({ params }: { params: { id: string } }) {
         {isLoading ? (
           <Skeleton className="h-4 w-[250px]" />
         ) : (
-          <h3 className="font-bold text-xl">{user?.username}</h3>
+          <h3 className="font-bold text-2xl">{user?.username}</h3>
         )}
       </div>
-      <div className="grid gap-6 grid-cols-1 md:grid-cols-3">
+      <div className="flex gap-4 items-center">
+        <Input
+          className=" w-11/12"
+          value={query}
+          onChange={(e) => {
+            setQuery(e.target.value);
+          }}
+          placeholder="Search..."
+        />
+        <Select
+          value={category}
+          onValueChange={(s: Category) => setCategory(s)}
+        >
+          <SelectTrigger className="w-[180px]">
+            <SelectValue>{category}</SelectValue>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Category</SelectLabel>
+              {categoryArray.map((category) => (
+                <SelectItem id={useId()} value={category}>
+                  {category}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {isLoading
           ? Array(3)
               .fill("")
@@ -47,7 +89,16 @@ export default function User({ params }: { params: { id: string } }) {
                   className="h-[300px] w-full"
                 />
               ))
-          : user?.lists.map((list) => <ListCard key={list.id} list={list} />)}
+          : user?.lists
+              .filter(
+                (list) =>
+                  (list.title.toLowerCase().includes(query.toLowerCase()) ||
+                    list.description
+                      .toLowerCase()
+                      .includes(query.toLowerCase())) &&
+                  list.category == category
+              )
+              .map((list) => <ListCard key={list.id} list={list} />)}
       </div>
     </div>
   );

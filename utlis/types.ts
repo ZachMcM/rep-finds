@@ -1,14 +1,17 @@
-import { List, Prisma } from "@prisma/client"
+import { List, Prisma } from "@prisma/client";
 
 export type UserExtended = {
-  id: string,
-  username: string,
-  imageUrl: string,
-  lists: List[]
-}
+  id: string;
+  username: string;
+  imageUrl: string;
+  lists: List[];
+};
 
 export type ListExtended = Prisma.ListGetPayload<{
   include: {
-    items: true
-  }
-}>
+    items: true;
+  };
+}>;
+
+export const categoryArray = ["Mixed", "Tops", "Bottoms", "Shoes", "Outerwear", "Accessories"] as const
+export type Category = typeof categoryArray[number]
