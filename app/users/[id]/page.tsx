@@ -53,7 +53,7 @@ export default function User({ params }: { params: { id: string } }) {
       </div>
       <div className="flex gap-4 items-center">
         <Input
-          className=" w-11/12"
+          className=" w-full"
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);

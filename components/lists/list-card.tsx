@@ -1,3 +1,5 @@
+"use client";
+
 import { List } from "@prisma/client";
 import {
   Card,
@@ -8,12 +10,21 @@ import {
 } from "../ui/card";
 import Image from "next/image";
 import Link from "next/link";
+import { useAuth, useSession } from "@clerk/nextjs";
+import { LikeButton } from "./like-button";
 
 export function ListCard({ list }: { list: List }) {
+  const { isLoaded, isSignedIn, userId } = useAuth();
+
   return (
-    <Link href={`/lists/${list.id}`} className="hover:opacity-80 duration-300">
+    <div className="relative hover:opacity-80 duration-300">
       <Card>
         <CardHeader>
+          <div className="flex justify-end pb-4 z-50">
+            {isLoaded && (
+              <LikeButton list={list} isSignedIn={isSignedIn} userId={userId} />
+            )}
+          </div>
           <p className="text-muted-foreground text-xs font-medium">
             {list.category}
           </p>
@@ -25,16 +36,20 @@ export function ListCard({ list }: { list: List }) {
             {list.coverImages.map((image, i) => (
               <div className="relative h-36 w-36">
                 <Image
-                src={image}
-                fill
-                alt="cover image"
-                className={i == 0 ? "rotate-45" : "-rotate-45 -scale-x-100"}
-              />
+                  src={image}
+                  fill
+                  alt="cover image"
+                  className={i == 0 ? "rotate-45" : "-rotate-45 -scale-x-100"}
+                />
               </div>
             ))}
           </div>
         </CardContent>
       </Card>
-    </Link>
+      <Link
+        href={`/lists/${list.id}`}
+        className="hover:opacity-80 duration-300 absolute inset-0"
+      />
+    </div>
   );
 }

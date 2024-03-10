@@ -2,6 +2,7 @@
 
 import { ItemCard } from "@/components/lists/item-card";
 import { Input } from "@/components/ui/input";
+import { Select, SelectTrigger } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ListExtended } from "@/utlis/types";
 import { useQuery } from "@tanstack/react-query";
@@ -47,6 +48,11 @@ export default function List({ params }: { params: { id: string } }) {
           }}
           placeholder="Search..."
         />
+        <Select>
+          <SelectTrigger className="w-[180px]">
+
+          </SelectTrigger>
+        </Select>
       </div>
       <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
         {isLoading
