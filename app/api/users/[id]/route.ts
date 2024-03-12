@@ -17,6 +17,6 @@ export async function GET(request: Request, { params }: { params: { id: string }
       lists: lists
     })
   } else {
-    return Response.json({status: 400, error: "Invalid user id"})
+    return Response.json({ error: "Invalid user id"}, { status: 400 })
   }
 }

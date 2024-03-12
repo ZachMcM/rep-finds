@@ -7,9 +7,16 @@ export type UserExtended = {
   lists: List[];
 };
 
+export type UserReduced = {
+  id: string;
+  username: string;
+  imageUrl: string;
+}
+
 export type ListExtended = Prisma.ListGetPayload<{
   include: {
     items: true;
+    comments: true
   };
 }>;
 

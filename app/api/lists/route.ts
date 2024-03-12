@@ -1,11 +1,17 @@
 import { NewListFormValues } from "@/components/list-creation/new-list-form-provider";
 import prisma from "@/prisma/prisma";
-import { auth } from "@clerk/nextjs";
+import { auth, clerkClient } from "@clerk/nextjs";
 
 export async function POST(request: Request) {
   const { userId } = auth();
 
   if (!userId) {
+    return Response.json({ status: 401, error: "Unauthenticated" });
+  }
+  
+  const user = await clerkClient.users.getUser(userId)
+
+  if (!user) {
     return Response.json({ status: 401, error: "Unauthenticated" });
   }
 
@@ -16,7 +22,7 @@ export async function POST(request: Request) {
   console.log("body: %s\n userId: %s", body, userId);
 
   if (!body) {
-    return Response.json({ status: 400, error: "Invalid request body" });
+    return Response.json({ error: "Invalid request body" }, { status: 400 });
   }
 
   const list = body.list;
@@ -38,6 +44,11 @@ export async function POST(request: Request) {
 
   const newList = await prisma.list.create({
     data: {
+      user: {
+        id: userId,
+        username: user.username,
+        imageUrl: user.imageUrl
+      },
       userId: userId,
       title: list.title,
       category: list.category,
@@ -54,6 +65,6 @@ export async function POST(request: Request) {
     },
   });
 
-  console.log(newList);
+  console.log("New List" + newList);
   return Response.json(newList);
 }

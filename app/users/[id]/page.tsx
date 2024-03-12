@@ -1,6 +1,7 @@
 "use client";
 
 import { ListCard } from "@/components/lists/list-card";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import {
@@ -15,6 +16,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { Category, UserExtended, categoryArray } from "@/utlis/types";
 import { useQuery } from "@tanstack/react-query";
+import { AlertCircle } from "lucide-react";
 import { useId, useState } from "react";
 
 export default function User({ params }: { params: { id: string } }) {
@@ -79,27 +81,36 @@ export default function User({ params }: { params: { id: string } }) {
           </SelectContent>
         </Select>
       </div>
-      <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {isLoading
-          ? Array(3)
-              .fill("")
-              .map((s) => (
-                <Skeleton
-                  key={crypto.randomUUID()}
-                  className="h-[300px] w-full"
-                />
-              ))
-          : user?.lists
-              .filter(
-                (list) =>
-                  (list.title.toLowerCase().includes(query.toLowerCase()) ||
-                    list.description
-                      .toLowerCase()
-                      .includes(query.toLowerCase())) &&
-                  list.category == category
-              )
-              .map((list) => <ListCard key={list.id} list={list} />)}
-      </div>
+      {isLoading ? (
+        Array(3)
+          .fill("")
+          .map((s) => (
+            <Skeleton key={crypto.randomUUID()} className="h-[300px] w-full" />
+          ))
+      ) : user?.lists.length == 0 ? (
+        <Alert className="w-full">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Oops!</AlertTitle>
+          <AlertDescription>
+            There are currently no lists here!
+          </AlertDescription>
+        </Alert>
+      ) : (
+        <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          {user?.lists
+            .filter(
+              (list) =>
+                (list.title.toLowerCase().includes(query.toLowerCase()) ||
+                  list.description
+                    .toLowerCase()
+                    .includes(query.toLowerCase())) &&
+                list.category == category
+            )
+            .map((list) => (
+              <ListCard key={list.id} list={list} />
+            ))}
+        </div>
+      )}
     </div>
   );
 }

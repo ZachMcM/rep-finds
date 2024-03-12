@@ -41,7 +41,7 @@ export const newListFormSchema = z.object({
         }).startsWith("https://www.sugargoo.com/")),
     })
     .array()
-    .min(1, { message: "You must have at least 1 item in the list" }),
+    .min(3, { message: "You must have at least 1 item in the list" }),
 });
 
 export type NewListFormValues = z.infer<typeof newListFormSchema>;

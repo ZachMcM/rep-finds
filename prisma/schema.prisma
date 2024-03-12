@@ -17,8 +17,10 @@ model List {
   coverImages String[]
   items Item[]
   userId String
+  user Json
   category String
   likes String[]
+  comments Comment[]
 }
 
 model Item {
@@ -28,6 +30,16 @@ model Item {
   imageUrl String
   price Decimal
   link String
+  list List @relation(fields: [listId], references: [id])
+  listId String
+  likes String[]
+}
+
+model Comment {
+  id String @id @default(cuid())
+  user Json
+  userId String
+  content String
   list List @relation(fields: [listId], references: [id])
   listId String
 }

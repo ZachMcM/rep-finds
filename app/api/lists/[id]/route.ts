@@ -8,12 +8,13 @@ export async function GET(req: Request, { params }: { params: { id: string }}) {
       id
     },
     include: {
-      items: true
+      items: true,
+      comments: true
     }
   })
 
   if (!list) {
-    return Response.json({ status: 400, error: "No list found" });
+    return Response.json({ error: "No list found" }, { status: 400 });
   }
 
   return Response.json(list)

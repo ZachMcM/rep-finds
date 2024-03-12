@@ -28,7 +28,7 @@ import { useAuth } from "@clerk/nextjs";
 import { useToast } from "../ui/use-toast";
 import { useWatch } from "react-hook-form";
 import { ItemForm } from "./item-form";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export function NewListForm() {
   const form = useNewListForm();
@@ -39,6 +39,8 @@ export function NewListForm() {
 
   const queryClient = useQueryClient();
 
+  const router = useRouter()
+
   const { mutate: submitList, isPending: submissionPending } = useMutation({
     mutationFn: async (values: NewListFormValues) => {
       const req = await fetch(`/api/lists`, {
@@ -48,10 +50,10 @@ export function NewListForm() {
         }),
       });
 
-      const res = await req.json();
       if (!req.ok) {
         throw new Error("There was an error creating the list")
       }
+      const res = await req.json();
       console.log(res);
       return res;
     },
@@ -66,7 +68,7 @@ export function NewListForm() {
         description: "Successfully created the list!",
       });
 
-      redirect(`/users/${userId}`)
+      router.push(`/users/${userId}`)
     },
     onError: (err) => {
       console.log(err);
@@ -79,7 +81,6 @@ export function NewListForm() {
 
   function onSubmit(values: NewListFormValues) {
     console.log(values);
-    console.log("Wrong on submit");
     submitList(values);
   }
 
@@ -106,6 +107,7 @@ export function NewListForm() {
                       placeholder="Enter a title"
                     />
                   </FormControl>
+                  <FormMessage/>
                 </FormItem>
               )}
             />
@@ -149,6 +151,7 @@ export function NewListForm() {
                       placeholder="Enter a description"
                     />
                   </FormControl>
+                  <FormMessage/>
                 </FormItem>
               )}
             />
