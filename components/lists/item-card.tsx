@@ -12,8 +12,8 @@ export function ItemCard({ item }: { item: Item }) {
           <div className="flex justify-end pb-4">
             <div className="p-2 text-xs font-bold bg-secondary rounded-md">${String(item.price)}</div>
           </div>
-          <CardTitle className="text-xl">{item.name}</CardTitle>
-          <CardDescription>{linkShortener(item.link)}</CardDescription>
+          <CardTitle className="text-xl text-center">{item.name}</CardTitle>
+          <CardDescription className="text-center break-words">{linkShortener(item.link)}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex ite justify-center">

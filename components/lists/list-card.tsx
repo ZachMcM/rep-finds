@@ -17,8 +17,8 @@ export function ListCard({ list }: { list: List }) {
   const { isLoaded, isSignedIn, userId } = useAuth();
 
   return (
-    <div className="relative hover:opacity-80 duration-300">
-      <Card>
+    <div className="relative hover:opacity-80 duration-300 h-full">
+      <Card className="h-full">
         <CardHeader>
           <div className="flex justify-end pb-4 z-50">
             {isLoaded && (
