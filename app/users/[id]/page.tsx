@@ -34,7 +34,7 @@ export default function User({ params }: { params: { id: string } }) {
   });
 
   const [query, setQuery] = useState("");
-  const [category, setCategory] = useState<Category>("Mixed");
+  const [category, setCategory] = useState<Category>("All");
 
   return (
     <div className="container md:mx-8 grid grid-cols-1 gap-8">
@@ -104,6 +104,7 @@ export default function User({ params }: { params: { id: string } }) {
                   list.description
                     .toLowerCase()
                     .includes(query.toLowerCase())) &&
+                category == "All" ? true :
                 list.category == category
             )
             .map((list) => (

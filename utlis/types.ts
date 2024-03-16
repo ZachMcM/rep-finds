@@ -20,7 +20,7 @@ export type ListExtended = Prisma.ListGetPayload<{
   };
 }>;
 
-export const categoryArray = ["Mixed", "Tops", "Bottoms", "Shoes", "Outerwear", "Accessories"] as const
+export const categoryArray = ["All", "Mixed", "Tops", "Bottoms", "Shoes", "Outerwear", "Accessories"] as const
 export type Category = typeof categoryArray[number]
 
 export const sortArray = ["Lowest", "Highest"] as const 

@@ -8,8 +8,8 @@ export async function POST(request: Request) {
   if (!userId) {
     return Response.json({ status: 401, error: "Unauthenticated" });
   }
-  
-  const user = await clerkClient.users.getUser(userId)
+
+  const user = await clerkClient.users.getUser(userId);
 
   if (!user) {
     return Response.json({ status: 401, error: "Unauthenticated" });
@@ -47,7 +47,7 @@ export async function POST(request: Request) {
       user: {
         id: userId,
         username: user.username,
-        imageUrl: user.imageUrl
+        imageUrl: user.imageUrl,
       },
       userId: userId,
       title: list.title,
@@ -67,4 +67,55 @@ export async function POST(request: Request) {
 
   console.log("New List" + newList);
   return Response.json(newList);
+}
+
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+
+  const query = searchParams.get("query");
+
+  if (!query) {
+    return Response.json({ error: "Invalid query" }, { status: 400 });
+  }
+
+  console.log(query)
+
+  const lists = await prisma.list.findMany({
+    where: {
+      OR: [
+        {
+          title: {
+            contains: query,
+            mode: "insensitive"
+          },
+        },
+        {
+          description: {
+            contains: query,
+            mode: "insensitive"
+          }
+        },
+        {
+          items: {
+            some: {
+              name: {
+                contains: query,
+                mode: "insensitive"
+              },
+            },
+          },
+        },
+      ],
+    },
+    orderBy: [
+      { likes: "desc" },
+      { date: "desc" },
+      { comments: { _count: "desc" } },
+    ],
+    take: 10,
+  });
+
+  console.log(lists)
+
+  return Response.json(lists);
 }

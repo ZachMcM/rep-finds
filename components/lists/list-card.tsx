@@ -5,6 +5,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "../ui/card";
@@ -12,13 +13,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { useAuth, useSession } from "@clerk/nextjs";
 import { LikeButton } from "./like-button";
+import { daysAgo } from "@/utlis/days-ago";
 
 export function ListCard({ list }: { list: List }) {
   const { isLoaded, isSignedIn, userId } = useAuth();
 
   return (
-    <div className="relative hover:opacity-80 duration-300 h-full">
-      <Card className="h-full">
+    <div className="relative hover:opacity-80 duration-300 h-full w-full">
+      <Card className="h-full w-full">
         <CardHeader>
           <div className="flex justify-end pb-4 z-50">
             {isLoaded && (
@@ -45,6 +47,9 @@ export function ListCard({ list }: { list: List }) {
             ))}
           </div>
         </CardContent>
+        <CardFooter>
+          <p className="text-xs font-medium text-muted-foreground">{daysAgo(new Date(list.date))}</p>
+        </CardFooter>
       </Card>
       <Link
         href={`/lists/${list.id}`}

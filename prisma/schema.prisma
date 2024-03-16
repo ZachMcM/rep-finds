@@ -21,6 +21,7 @@ model List {
   category String
   likes String[]
   comments Comment[]
+  date DateTime @default(now())
 }
 
 model Item {
@@ -30,7 +31,7 @@ model Item {
   imageUrl String
   price Decimal
   link String
-  list List @relation(fields: [listId], references: [id])
+  list List @relation(fields: [listId], references: [id], onDelete: Cascade)
   listId String
   likes String[]
 }
@@ -40,6 +41,7 @@ model Comment {
   user Json
   userId String
   content String
-  list List @relation(fields: [listId], references: [id])
+  list List @relation(fields: [listId], references: [id], onDelete: Cascade)
   listId String
+  date DateTime @default(now())
 }

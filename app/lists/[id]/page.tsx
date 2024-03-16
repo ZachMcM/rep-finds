@@ -1,5 +1,7 @@
 "use client";
 
+import { CommentsView } from "@/components/comments/comments-view";
+import { ListMore } from "@/components/lists/list-more";
 import { ItemCard } from "@/components/lists/item-card";
 import { LikeButton } from "@/components/lists/like-button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -17,12 +19,13 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "@/components/ui/use-toast";
 import { convertUser } from "@/utlis/convert-user";
-import { ListExtended, Sort, UserReduced, sortArray } from "@/utlis/types";
+import { ListExtended, Sort, sortArray } from "@/utlis/types";
 import { useAuth } from "@clerk/nextjs";
 import { List } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
-import { Check, Share, Share2 } from "lucide-react";
-import { use, useState } from "react";
+import { Check, Share } from "lucide-react";
+import { useState } from "react";
+import Link from "next/link";
 
 export default function List({ params }: { params: { id: string } }) {
   const { data: list, isLoading } = useQuery({
@@ -67,20 +70,35 @@ export default function List({ params }: { params: { id: string } }) {
   return (
     <div className="container md:mx-8 grid grid-cols-1 gap-8">
       <div className="w-full flex flex-col-reverse md:flex-row md:justify-between gap-2">
-        <div className="flex flex-col gap-3">
-          <div className="flex items-center space-x-2">
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center gap-3">
             {isLoading ? (
-              <Skeleton className="h-7 w-7 rounded-full" />
+              <Skeleton className="h-8 w-8 rounded-full" />
             ) : (
-              <Avatar className="h-7 w-7">
-                <AvatarImage src={convertUser(list?.user).imageUrl} alt="avatar" />
-                <AvatarFallback />
-              </Avatar>
+              <Link
+                href={`/users/${list?.userId}`}
+                className="hover:opacity-80 duration-500"
+              >
+                <Avatar className="h-8 w-8">
+                  <AvatarImage
+                    src={convertUser(list?.user).imageUrl}
+                    alt="avatar"
+                  />
+                  <AvatarFallback />
+                </Avatar>
+              </Link>
             )}
             {isLoading ? (
               <Skeleton className="h-4 w-[250px]" />
             ) : (
-              <h3 className="font-semibold text-lg">{convertUser(list?.user).username}</h3>
+              <Link
+                href={`/users/${list?.userId}`}
+                className="hover:opacity-80 duration-500"
+              >
+                <h3 className="font-semibold text-lg">
+                  {convertUser(list?.user).username}
+                </h3>
+              </Link>
             )}
           </div>
           {isLoading ? (
@@ -89,16 +107,18 @@ export default function List({ params }: { params: { id: string } }) {
               <Skeleton className="h-4 w-[500px]" />
             </>
           ) : (
-            <>
+            <div className="flex flex-col gap-1">
               <h3 className="font-bold text-xl md:text-2xl">{list?.title}</h3>
               <p className="text-muted-foreground text-sm md:text-base font-medium">
                 {list?.description}
               </p>
-            </>
+            </div>
           )}
         </div>
-        {!isLoading && isLoaded && (
+        {!isLoading && isLoaded && list && (
           <div className="flex gap-4 items-center">
+            {userId == list.userId && <ListMore list={list} />}
+            <CommentsView listId={list.id} comments={list.comments} />
             <LikeButton
               list={list as List}
               userId={userId}
@@ -111,7 +131,7 @@ export default function List({ params }: { params: { id: string } }) {
                 shareList();
               }}
             >
-              <Share2 className="h-5 w-5" />
+              <Share className="h-5 w-5" />
             </Button>
           </div>
         )}
@@ -159,8 +179,6 @@ export default function List({ params }: { params: { id: string } }) {
               )
               .map((item) => <ItemCard key={item.id} item={item} />)}
       </div>
-      {/* TODO comments */}
-      <div className="w-full"></div>
     </div>
   );
 }

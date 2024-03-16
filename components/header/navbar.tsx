@@ -8,7 +8,7 @@ import { ArrowRight } from "lucide-react";
 import { Sidebar } from "./sidebar";
 
 export function Navbar() {
-  const { userId, sessionId } = useAuth();
+  const { userId, sessionId, isLoaded } = useAuth();
 
   return (
     <div className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -30,19 +30,22 @@ export function Navbar() {
         </div>
         <Sidebar />
         <div className="grid grid-flow-col gap-4 items-center">
-          {userId && sessionId ? (
-            <Link href="/new-find-list" className="hidden md:block">
-              <Button>
-                Post a find list <ArrowRight className="ml-2 h-4 w-4" />{" "}
-              </Button>
-            </Link>
+          {isLoaded && userId && sessionId ? (
+            <>
+              {" "}
+              <Link href="/new-find-list" className="hidden md:block">
+                <Button>
+                  Post a find list <ArrowRight className="ml-2 h-4 w-4" />{" "}
+                </Button>
+              </Link>
+              <UserButton afterSignOutUrl="/" />
+            </>
           ) : (
             <Link href="/sign-in">
               <Button>Sign In</Button>
             </Link>
           )}
           <ThemeButton />
-          <UserButton afterSignOutUrl="/" />
         </div>
       </div>
     </div>

@@ -1,8 +1,8 @@
 import prisma from "@/prisma/prisma"
-import { UserExtended } from "@/utlis/types"
 import { auth, clerkClient } from "@clerk/nextjs"
 
-export async function POST({ params }: { params: { id: string }}, req: Request) {
+export async function POST(req: Request, { params }: { params: { id: string }}) {
+  console.log(params)
   const listId = params.id
   const { content } = await req.json() as { content?: string | null }
 

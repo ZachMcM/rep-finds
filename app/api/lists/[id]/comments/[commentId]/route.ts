@@ -1,7 +1,7 @@
 import prisma from "@/prisma/prisma"
 import { auth } from "@clerk/nextjs"
 
-export async function DELETE({ params }: { params: { id: string, commentId: string }}, req: Request) {
+export async function DELETE(req: Request, { params }: { params: { id: string, commentId: string }}) {
   const { userId } = auth()
 
   if (!userId) {
