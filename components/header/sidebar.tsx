@@ -26,7 +26,7 @@ export function Sidebar() {
             className="text-muted-foreground hover:opacity-70 text-sm duration-300"
           >
             {" "}
-              Post a Find List
+              New List
           </Link>
           {userId && sessionId && (
             <Link

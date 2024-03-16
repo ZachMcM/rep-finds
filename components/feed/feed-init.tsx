@@ -13,6 +13,7 @@ export function FeedInit() {
       return data;
     },
     queryKey: ["feed-init"],
+    gcTime: 0
   });
 
   return (

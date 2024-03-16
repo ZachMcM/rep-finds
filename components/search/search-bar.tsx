@@ -1,19 +1,13 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import {
-  Command,
-  CommandDialog,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "../ui/command";
+import { CommandDialog, CommandEmpty, CommandInput } from "../ui/command";
 import { Button } from "../ui/button";
 import { useQuery } from "@tanstack/react-query";
 import debounce from "lodash.debounce";
 import { List } from "@prisma/client";
+import { ListResult } from "./list-result";
+import { Loader2 } from "lucide-react";
 
 export function SearchBar() {
   const [open, setOpen] = useState(false);
@@ -30,7 +24,11 @@ export function SearchBar() {
     return () => document.removeEventListener("keydown", down);
   }, []);
 
-  const { data: searchResults, refetch } = useQuery({
+  const {
+    data: searchResults,
+    refetch,
+    isLoading,
+  } = useQuery({
     queryKey: ["list-search"],
     queryFn: async (): Promise<List[]> => {
       if (!query || query == "" || query == " " || query == "  ") {
@@ -56,11 +54,11 @@ export function SearchBar() {
     <>
       <Button
         variant="outline"
-        className="w-full flex items-center justify-between p-4"
+        className="w-full max-w-xs md:max-w-xs lg:max-w-lg flex items-center justify-between p-4"
         onClick={() => setOpen(true)}
       >
         <p className="font-medium text-muted-foreground">
-          Search for a list or item...
+          Search for a list...
         </p>
         <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
           <span className="text-xs">⌘</span>J
@@ -75,15 +73,14 @@ export function SearchBar() {
           }}
           placeholder="Search for a list or item..."
         />
-        {searchResults && searchResults.length > 0 ? (
+        {isLoading ? (
+          <div className="py-6 text-center text-sm w-full flex justify-center items-center">
+            <Loader2 className="h-4 w-4 animate-spin" />
+          </div>
+        ) : searchResults && searchResults.length > 0 ? (
           <div className="flex flex-col m-2">
             {searchResults?.map((list) => (
-              <div
-                className="px-2 py-1.5 rounded-sm text-sm text-accent-foreground hover:bg-secondary duration-200"
-                key={list.id}
-              >
-                {list.title}
-              </div>
+              <ListResult list={list} />
             ))}
           </div>
         ) : (

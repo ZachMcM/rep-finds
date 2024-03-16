@@ -11,12 +11,16 @@ import {
 } from "../ui/card";
 import Image from "next/image";
 import Link from "next/link";
-import { useAuth, useSession } from "@clerk/nextjs";
+import { useAuth } from "@clerk/nextjs";
 import { LikeButton } from "./like-button";
 import { daysAgo } from "@/utlis/days-ago";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { convertUser } from "@/utlis/convert-user";
 
 export function ListCard({ list }: { list: List }) {
   const { isLoaded, isSignedIn, userId } = useAuth();
+
+  const user = convertUser(list.user)
 
   return (
     <div className="relative hover:opacity-80 duration-300 h-full w-full">
@@ -27,6 +31,16 @@ export function ListCard({ list }: { list: List }) {
               <LikeButton list={list} isSignedIn={isSignedIn} userId={userId} />
             )}
           </div>
+          <Link
+            href={`users/${list.userId}`}
+            className="flex items-center gap-2 hover:opacity-80 duration-500 z-10"
+          >
+            <Avatar className="w-6 h-6">
+              <AvatarImage src={user.imageUrl} />
+              <AvatarFallback />
+            </Avatar>
+            <p className="text-sm font-semibold">{user.username}</p>
+          </Link>
           <p className="text-muted-foreground text-xs font-medium">
             {list.category}
           </p>

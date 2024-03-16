@@ -29,10 +29,12 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <ReactQueryProvider>
-              <Navbar />
-              <div className="py-10 md:p-16">{children}</div>
-              <Footer/>
-              <Toaster/>
+              <div className=" min-h-screen">
+                <Navbar />
+                <div className="p-6 md:p-10 lg:p-16">{children}</div>
+              </div>
+              <Footer />
+              <Toaster />
             </ReactQueryProvider>
           </ThemeProvider>
         </body>
