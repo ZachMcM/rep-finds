@@ -21,12 +21,26 @@ export function Sidebar() {
             {" "}
             <p className="font-bold">Rep Finds</p>
           </Link>
+          <Link href="/" 
+            onClick={() => setOpen(false)}
+            className="text-muted-foreground hover:opacity-70 text-sm duration-300"
+          >
+            {" "}
+              Home
+          </Link>
           <Link href="/new-find-list" 
             onClick={() => setOpen(false)}
             className="text-muted-foreground hover:opacity-70 text-sm duration-300"
           >
             {" "}
               New List
+          </Link>
+          <Link href="/about" 
+            onClick={() => setOpen(false)}
+            className="text-muted-foreground hover:opacity-70 text-sm duration-300"
+          >
+            {" "}
+              About
           </Link>
           {userId && sessionId && (
             <Link

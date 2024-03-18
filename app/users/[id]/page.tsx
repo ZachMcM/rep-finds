@@ -37,7 +37,7 @@ export default function User({ params }: { params: { id: string } }) {
   const [category, setCategory] = useState<Category>(categoryArray[0]);
 
   return (
-    <div className="container md:mx-8 grid grid-cols-1 gap-8">
+    <div className="grid grid-cols-1 gap-8">
       <div className="flex items-center space-x-4">
         {isLoading ? (
           <Skeleton className="h-12 w-12 rounded-full" />

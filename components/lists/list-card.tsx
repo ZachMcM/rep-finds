@@ -53,14 +53,11 @@ export function ListCard({ list }: { list: List }) {
             <CardTitle>{list.title}</CardTitle>
             <CardDescription>{list.description}</CardDescription>
           </div>
-          {/* <p className="text-muted-foreground text-xs font-medium">
-            {list.category}
-          </p> */}
         </CardHeader>
         <CardContent>
           <div className="flex justify-center">
             {list.coverImages.map((image, i) => (
-              <div className="relative h-36 w-36">
+              <div className="relative h-32 w-32">
                 <Image
                   src={image}
                   fill

@@ -11,7 +11,7 @@ export default function NewFindList() {
   }
 
   return (
-    <div className="container md:mx-8 grid grid-cols-1 gap-8">
+    <div className="grid grid-cols-1 gap-8">
       <div className="flex flex-col">
         <h1 className="text-3xl font-extrabold">New List</h1>
         <p className="text-muted-foreground">Create a new rep finds list</p>

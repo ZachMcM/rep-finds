@@ -75,7 +75,7 @@ export default function List({ params }: { params: { id: string } }) {
   }
 
   return (
-    <div className="container md:mx-8 grid grid-cols-1 gap-8">
+    <div className="grid grid-cols-1 gap-8">
       <div className="w-full flex flex-col-reverse md:flex-row md:justify-between gap-2">
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-3">

@@ -11,7 +11,7 @@ export function MarketingList() {
           Post a find list <ArrowRight className="ml-2 h-4 w-4" />{" "}
         </Button>
       </Link>
-      <div className="p-3 border rounded-sm flex flex-col items-center gap-6">
+      <div className="px-3 py-6 border rounded-sm flex flex-col items-center gap-6">
         <p className="text-sm font-medium text-center whitespace-break-spaces">
           Use the QR code below to signup to Pandabuy and use code 'sheets' for
           a discount off your first order! Or click the{" "}

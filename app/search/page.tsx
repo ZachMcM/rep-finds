@@ -48,7 +48,7 @@ export default function Search() {
 
   return (
     <div className="flex justify-center">
-      <div className="w-full flex flex-col gap-6 mt-10 lg:w-2/3">
+      <div className="w-full flex flex-col gap-6 lg:w-2/3">
         <div className="flex flex-col">
           <p>Search results for</p>
           <p className="text-xl font-bold">
