@@ -21,6 +21,7 @@ export const newListFormSchema = z.object({
     .object({
       product: z.object({
         name: z.string(),
+        productType: z.string(),
         imageUrl: z.string().url(),
         id: z.string(),
       }),

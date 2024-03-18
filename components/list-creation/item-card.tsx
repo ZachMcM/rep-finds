@@ -5,6 +5,7 @@ import Link from "next/link";
 import { linkShortener } from "@/utlis/link-shortener";
 import { X } from "lucide-react";
 import { useNewListForm } from "./new-list-form-provider";
+import { Badge } from "../ui/badge";
 
 export function ItemCard({ item }: { item: ListFormItem }) {
   const primaryListForm = useNewListForm();
@@ -12,8 +13,11 @@ export function ItemCard({ item }: { item: ListFormItem }) {
   return (
     <Card className="w-full relative">
       <CardContent>
-        <div className="aspect-square w-full relative">
-          <Image src={item.product.imageUrl} alt={item.product.name} fill />
+        <div className="flex flex-col items-center">
+          <Badge variant="secondary" className="w-fit mt-8 mb-2 capitalize">{item.product.productType}</Badge>
+          <div className="aspect-square w-full relative">
+            <Image src={item.product.imageUrl} alt={item.product.name} fill />
+          </div>
         </div>
         <div className="flex flex-col gap-2">
           <p className="text-sm font-semibold text-center">
@@ -34,7 +38,7 @@ export function ItemCard({ item }: { item: ListFormItem }) {
         </div>
       </CardContent>
       <button
-        className="absolute -top-2 -right-2 bg-red-500 p-1 rounded-full hover:opacity-70 duration-300"
+        className="absolute -top-2 -right-2 bg-destructive p-1 rounded-full hover:bg-destructive/80 hover:text-primary/80 duration-300"
         onClick={() => {
           const filteredItems = primaryListForm
             .getValues("items")

@@ -16,36 +16,46 @@ import { LikeButton } from "./like-button";
 import { daysAgo } from "@/utlis/days-ago";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { convertUser } from "@/utlis/convert-user";
+import { Badge } from "../ui/badge";
 
 export function ListCard({ list }: { list: List }) {
   const { isLoaded, isSignedIn, userId } = useAuth();
 
-  const user = convertUser(list.user)
+  const user = convertUser(list.user);
 
   return (
     <div className="relative hover:opacity-80 duration-300 h-full w-full">
       <Card className="h-full w-full">
         <CardHeader>
-          <div className="flex justify-end pb-4 z-50">
-            {isLoaded && (
-              <LikeButton list={list} isSignedIn={isSignedIn} userId={userId} />
-            )}
+          <div className="flex w-full justify-between mb-6">
+            <Link
+              href={`users/${list.userId}`}
+              className="flex items-center gap-2 hover:opacity-80 duration-500 z-10"
+            >
+              <Avatar className="w-6 h-6">
+                <AvatarImage src={user.imageUrl} />
+                <AvatarFallback />
+              </Avatar>
+              <p className="text-sm font-semibold">{user.username}</p>
+            </Link>
+            <div className="flex justify-end z-50">
+              {isLoaded && (
+                <LikeButton
+                  list={list}
+                  isSignedIn={isSignedIn}
+                  userId={userId}
+                />
+              )}
+            </div>
           </div>
-          <Link
-            href={`users/${list.userId}`}
-            className="flex items-center gap-2 hover:opacity-80 duration-500 z-10"
-          >
-            <Avatar className="w-6 h-6">
-              <AvatarImage src={user.imageUrl} />
-              <AvatarFallback />
-            </Avatar>
-            <p className="text-sm font-semibold">{user.username}</p>
-          </Link>
-          <p className="text-muted-foreground text-xs font-medium">
+          <div className="flex flex-col gap-3 items-center">
+            <Badge className="w-fit">{list.category}</Badge>
+            <CardTitle>{list.title}</CardTitle>
+            <CardDescription>{list.description}</CardDescription>
+          </div>
+          {/* <p className="text-muted-foreground text-xs font-medium">
             {list.category}
-          </p>
-          <CardTitle>{list.title}</CardTitle>
-          <CardDescription>{list.description}</CardDescription>
+          </p> */}
         </CardHeader>
         <CardContent>
           <div className="flex justify-center">
@@ -62,7 +72,9 @@ export function ListCard({ list }: { list: List }) {
           </div>
         </CardContent>
         <CardFooter>
-          <p className="text-xs font-medium text-muted-foreground">{daysAgo(new Date(list.date))}</p>
+          <p className="text-xs font-medium text-muted-foreground">
+            {daysAgo(new Date(list.date))}
+          </p>
         </CardFooter>
       </Card>
       <Link

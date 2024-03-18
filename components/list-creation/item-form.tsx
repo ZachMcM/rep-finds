@@ -38,12 +38,12 @@ import {
 import { ScrollArea } from "../ui/scroll-area";
 import { Input } from "../ui/input";
 import { useNewListForm } from "./new-list-form-provider";
-
-export type QueryItem = { name: string; imageUrl: string; id: string };
+import { QueryItem } from "@/utlis/types";
 
 export const itemFormSchema = z.object({
   product: z.object({
     name: z.string(),
+    productType: z.string(),
     imageUrl: z.string().url(),
     id: z.string(),
   }),
@@ -82,6 +82,7 @@ export function ItemForm() {
     defaultValues: {
       product: {
         name: "",
+        productType: "",
         imageUrl: "",
         id: "",
       },
@@ -212,6 +213,7 @@ export function ItemForm() {
                                       form.setValue("product", {
                                         name: item.name,
                                         imageUrl: item.imageUrl,
+                                        productType: item.productType,
                                         id: item.id,
                                       });
                                       setPopoverOpen(false);

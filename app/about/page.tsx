@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export default function About() {
   return (
-    <div className="mt-16 flex w-full justify-center items-center">
+    <div className="mt-20 flex w-full justify-center items-center">
       <div className="flex flex-col gap-32 md:gap-64 md:max-w-5xl">
         <div className="flex flex-col gap-3 md:gap-6 items-center text-center">
           <div className="flex flex-col items-center gap-4">

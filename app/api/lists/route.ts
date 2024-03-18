@@ -30,6 +30,7 @@ export async function POST(request: Request) {
   const listItems = list.items.map((item) => ({
     name: item.product.name,
     imageUrl: item.product.imageUrl,
+    category: item.product.productType,
     price: item.price as number,
     link: item.link,
     userId: userId,

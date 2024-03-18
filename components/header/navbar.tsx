@@ -11,7 +11,7 @@ export function Navbar() {
   const { userId, sessionId, isLoaded } = useAuth();
 
   return (
-    <div className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <div className="sticky top-0 z-50 w-full border-b bg-background">
       <div className="w-full flex gap-4 md:gap-0 justify-between items-center p-4 md:px-10">
         <div className="hidden md:flex flex-row items-center gap-4 lg:gap-8">
           <Link href="/" className="font-bold">

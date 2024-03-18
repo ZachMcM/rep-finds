@@ -19,7 +19,13 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "@/components/ui/use-toast";
 import { convertUser } from "@/utlis/convert-user";
-import { ListExtended, Sort, sortArray } from "@/utlis/types";
+import {
+  Category,
+  ListExtended,
+  Sort,
+  categoryArray,
+  sortArray,
+} from "@/utlis/types";
 import { useAuth } from "@clerk/nextjs";
 import { List } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
@@ -42,6 +48,7 @@ export default function List({ params }: { params: { id: string } }) {
 
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState<Sort>(sortArray[0]);
+  const [category, setCategory] = useState<Category>(categoryArray[0]);
 
   const { userId, isSignedIn, isLoaded } = useAuth();
 
@@ -144,6 +151,24 @@ export default function List({ params }: { params: { id: string } }) {
           }}
           placeholder="Search..."
         />
+        <Select
+          value={category}
+          onValueChange={(e: Category) => setCategory(e)}
+        >
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Filter items" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Category</SelectLabel>
+              {categoryArray
+                .filter((category) => category != "Mixed")
+                .map((category) => (
+                  <SelectItem value={category}>{category}</SelectItem>
+                ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
         <Select value={sort} onValueChange={(e: Sort) => setSort(e)}>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Sort items" />
@@ -176,6 +201,11 @@ export default function List({ params }: { params: { id: string } }) {
                 sort == "Highest"
                   ? Number(a.price) - Number(b.price)
                   : Number(b.price) - Number(a.price)
+              )
+              .filter((item) =>
+                category == "All"
+                  ? true
+                  : item.category.toLowerCase() == category.toLocaleLowerCase()
               )
               .map((item) => <ItemCard key={item.id} item={item} />)}
       </div>

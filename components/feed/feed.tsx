@@ -7,7 +7,11 @@ import { useIntersection } from "@mantine/hooks";
 import { Loader2 } from "lucide-react";
 import { ListCard } from "../lists/list-card";
 
-export function Feed({ initialData }: { initialData: List[] }) {
+export function Feed({
+  initialData,
+}: {
+  initialData: List[];
+}) {
   const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
     queryKey: [],
     queryFn: async ({ pageParam }): Promise<List[]> => {

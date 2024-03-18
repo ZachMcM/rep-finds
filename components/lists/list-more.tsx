@@ -6,9 +6,9 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
-import { TbDots } from "react-icons/tb";
 import { AlertDialog, AlertDialogTrigger } from "../ui/alert-dialog";
 import { ListDelete } from "./list-delete";
+import { Edit3 } from "lucide-react";
 
 export function ListMore({ list }: { list: ListExtended }) {
   return (
@@ -16,7 +16,7 @@ export function ListMore({ list }: { list: ListExtended }) {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="icon">
-            <TbDots className="h-5 w-5" />
+          <Edit3 className="h-5 w-5" /> 
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>

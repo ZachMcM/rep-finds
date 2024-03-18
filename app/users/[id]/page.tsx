@@ -34,7 +34,7 @@ export default function User({ params }: { params: { id: string } }) {
   });
 
   const [query, setQuery] = useState("");
-  const [category, setCategory] = useState<Category>("All");
+  const [category, setCategory] = useState<Category>(categoryArray[0]);
 
   return (
     <div className="container md:mx-8 grid grid-cols-1 gap-8">
@@ -82,11 +82,16 @@ export default function User({ params }: { params: { id: string } }) {
         </Select>
       </div>
       {isLoading ? (
-        Array(3)
-          .fill("")
-          .map((s) => (
-            <Skeleton key={crypto.randomUUID()} className="h-[300px] w-full" />
-          ))
+        <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          {Array(3)
+            .fill("")
+            .map((s) => (
+              <Skeleton
+                key={crypto.randomUUID()}
+                className="h-[300px] w-full"
+              />
+            ))}
+        </div>
       ) : user?.lists.length == 0 ? (
         <Alert className="w-full">
           <AlertCircle className="h-4 w-4" />
@@ -98,14 +103,12 @@ export default function User({ params }: { params: { id: string } }) {
       ) : (
         <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {user?.lists
-            .filter(
-              (list) =>
-                (list.title.toLowerCase().includes(query.toLowerCase()) ||
-                  list.description
-                    .toLowerCase()
-                    .includes(query.toLowerCase())) &&
-                category == "All" ? true :
-                list.category == category
+            .filter((list) =>
+              (list.title.toLowerCase().includes(query.toLowerCase()) ||
+                list.description.toLowerCase().includes(query.toLowerCase())) &&
+              category == "All"
+                ? true
+                : list.category == category
             )
             .map((list) => (
               <ListCard key={list.id} list={list} />

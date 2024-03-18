@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { KeyboardEvent, useCallback, useEffect, useState } from "react";
 import { CommandDialog, CommandEmpty, CommandInput } from "../ui/command";
 import { Button } from "../ui/button";
 import { useQuery } from "@tanstack/react-query";
@@ -8,10 +8,13 @@ import debounce from "lodash.debounce";
 import { List } from "@prisma/client";
 import { ListResult } from "./list-result";
 import { Loader2, Search } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export function SearchBar() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
+
+  const router = useRouter()
 
   const {
     data: searchResults,
@@ -39,6 +42,19 @@ export function SearchBar() {
     request();
   }, []);
 
+  function resetFunc() {
+    setOpen(false)
+    setQuery("")
+    debounceRequest()
+  }
+
+  function goToSearchPage(e: KeyboardEvent<HTMLInputElement>) {
+    if (e.key == "Enter" && open && searchResults && searchResults.length > 0) {
+      router.push(`/search?query=${query}`)
+      resetFunc()
+    }
+  }
+
   return (
     <>
       <Button
@@ -52,6 +68,7 @@ export function SearchBar() {
       <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandInput
           value={query}
+          onKeyDown={goToSearchPage}
           onValueChange={(query) => {
             setQuery(query);
             debounceRequest();
@@ -65,7 +82,7 @@ export function SearchBar() {
         ) : searchResults && searchResults.length > 0 ? (
           <div className="flex flex-col m-2">
             {searchResults?.map((list) => (
-              <ListResult list={list} />
+              <ListResult resetFunc={resetFunc} list={list} />
             ))}
           </div>
         ) : (

@@ -29,6 +29,7 @@ model Item {
   userId String 
   name String
   imageUrl String
+  category String
   price Decimal
   link String
   list List @relation(fields: [listId], references: [id], onDelete: Cascade)

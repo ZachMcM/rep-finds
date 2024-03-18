@@ -11,17 +11,32 @@ export type UserReduced = {
   id: string;
   username: string;
   imageUrl: string;
-}
+};
 
 export type ListExtended = Prisma.ListGetPayload<{
   include: {
     items: true;
-    comments: true
+    comments: true;
   };
 }>;
 
-export const categoryArray = ["All", "Mixed", "Tops", "Bottoms", "Shoes", "Outerwear", "Accessories"] as const
-export type Category = typeof categoryArray[number]
+export type QueryItem = {
+  name: string;
+  imageUrl: string;
+  productType: string;
+  id: string;
+};
 
-export const sortArray = ["Lowest", "Highest"] as const 
-export type Sort = typeof sortArray[number]
+export const categoryArray = [
+  "All",
+  "Mixed",
+  "Tops",
+  "Bottoms",
+  "Sneakers",
+  "Outerwear",
+  "Accessories",
+] as const;
+export type Category = (typeof categoryArray)[number];
+
+export const sortArray = ["Lowest", "Highest"] as const;
+export type Sort = (typeof sortArray)[number];

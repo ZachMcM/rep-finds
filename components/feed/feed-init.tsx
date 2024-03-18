@@ -17,7 +17,7 @@ export function FeedInit() {
   });
 
   return (
-    <div className="flex flex-col gap-6 w-full">
+    <div className="flex flex-col gap-6 w-full h-full">
       {!isLoading && initialData ? (
         <Feed initialData={initialData} />
       ) : (

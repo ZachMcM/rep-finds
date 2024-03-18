@@ -2,14 +2,23 @@ import { convertUser } from "@/utlis/convert-user";
 import { List } from "@prisma/client";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Heart } from "lucide-react";
-import { TbHeart, TbHeartFilled } from "react-icons/tb";
+import { TbHeart } from "react-icons/tb";
+import { Dispatch, SetStateAction } from "react";
 
-export function ListResult({ list }: { list: List }) {
+export function ListResult({
+  list,
+  resetFunc
+}: {
+  list: List;
+  resetFunc: Function
+}) {
   const user = convertUser(list.user);
 
   return (
-    <div className="relative p-4 rounded-sm hover:bg-secondary duration-200">
+    <div
+      className="relative p-4 rounded-sm hover:bg-secondary duration-200"
+      onClick={() => resetFunc()}
+    >
       <div className="flex justify-between items-center">
         <div className="flex flex-col gap-2.5">
           <Link
