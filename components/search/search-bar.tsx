@@ -7,22 +7,11 @@ import { useQuery } from "@tanstack/react-query";
 import debounce from "lodash.debounce";
 import { List } from "@prisma/client";
 import { ListResult } from "./list-result";
-import { Loader2 } from "lucide-react";
+import { Loader2, Search } from "lucide-react";
 
 export function SearchBar() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
-
-  useEffect(() => {
-    const down = (e: KeyboardEvent) => {
-      if (e.key === "j" && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        setOpen((open) => !open);
-      }
-    };
-    document.addEventListener("keydown", down);
-    return () => document.removeEventListener("keydown", down);
-  }, []);
 
   const {
     data: searchResults,
@@ -54,15 +43,11 @@ export function SearchBar() {
     <>
       <Button
         variant="outline"
-        className="w-full max-w-xs md:max-w-xs lg:max-w-lg flex items-center justify-between p-4"
+        className="flex justify-start items-center w-full max-w-xs md:max-w-xs lg:max-w-lg font-medium text-muted-foreground"
         onClick={() => setOpen(true)}
       >
-        <p className="font-medium text-muted-foreground">
-          Search for a list...
-        </p>
-        <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
-          <span className="text-xs">⌘</span>J
-        </kbd>
+        <Search className="h-4 w-4 mr-2 " />
+        Search for a list...
       </Button>
       <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandInput
